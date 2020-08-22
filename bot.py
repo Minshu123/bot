@@ -1,5 +1,6 @@
 import pyttsx3
 import os
+import speech_recognition as sr
 from gtts import gTTS #Import Google Text to Speech
 # initialisation 
 engine = pyttsx3.init() 
@@ -16,7 +17,25 @@ while True:
     if (authenticate!=passw and flag==0):
         engine.say('Authenticate your self')
         engine.runAndWait()
-        au=input()
+        r=sr.Recognizer()
+        au=''
+        while(1):
+            r=sr.Recognizer()
+            with sr.Microphone() as source:
+                engine.say('Speak anything: ')
+                engine.runAndWait()
+                audio=r.listen(source)
+    
+                try:
+                    text=r.recognize_google(audio)
+                    print('you said: {}',format(text))
+                    au=text.lower()
+                    break
+                except:
+                    engine.say('Sorry sir,I could not recognize your voice, please speak again')
+                    engine.runAndWait()
+                    continue;
+                    
         if ('stop' in au or 'exit' in au or 'terminate' in au):
             engine.say('ok sir as you wish ,thank you')
             engine.say('I am shutting down')
@@ -32,16 +51,51 @@ while True:
     if (flag==1):
         engine.say("I am here to help you ,please say your requirement")
         engine.runAndWait()
-        p=input()
+        p=''
         
-        if(('your' in p and 'name' in p and 'change' not in p)or('who' in p or 'you' in p )or('what' in p or ('your' in p and 'identity' in p ) )):
+        while(1):
+            r=sr.Recognizer()
+            with sr.Microphone() as source:
+                engine.say('Speak anything: ')
+                engine.runAndWait()
+                audio=r.listen(source)
+    
+                try:
+                    text=r.recognize_google(audio)
+                    print('you said: {}',format(text))
+                    p=text.lower()
+                    break
+                except:
+                    engine.say('Sorry sir,I could not recognize your voice, please speak again')
+                    engine.runAndWait()
+                    continue;
+                
+        if(('your' in p and 'name' in p and 'change' not in p)or('who' in p and 'you' in p )or('what' in p or ('your' in p and 'identity' in p ) )):
             engine.say('My name is ')
             engine.say(name)
             engine.runAndWait()
         elif ('your' in p and 'name' in p and 'change'):
             engine.say('ok sir ,what name you suggest')
             engine.runAndWait()
-            p=input()
+            
+            p=''
+            while(1):
+                r=sr.Recognizer()
+                with sr.Microphone() as source:
+                    engine.say('Speak anything: ')
+                    engine.runAndWait()
+                    audio=r.listen(source)
+
+                    try:
+                        text=r.recognize_google(audio)
+                        print('you said: {}',format(text))
+                        p=text.lower()
+                        break
+                    except:
+                        engine.say('Sorry sir,I could not recognize your voice, please speak again')
+                        engine.runAndWait()
+                        continue;
+                        
             name=p
             engine.say('my name is update to')
             engine.say(name)
@@ -62,9 +116,9 @@ while True:
             engine.say('yes sir')
             engine.runAndWait()
         elif (("run" in p) or ('open' in p) or  ("execute" in p )) and  (("notepad" in p) or ("editor" in p) ) :
-            os.system("notepad")
             engine.say('notepad is opened sir')
             engine.runAndWait()
+            os.system("notepad")
         elif (("run" in p) or  ("execute" in p ) or ('open' in p)) and  (("intellij" in p) or ("java" in p) ) :
             engine.say('Ok sir, i am opening intellij idea for java programming')
             engine.say('thank you')
